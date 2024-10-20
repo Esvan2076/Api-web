@@ -16,7 +16,7 @@ import com.webos.esvan.entities.Producto;
 import com.webos.esvan.services.ProductoService;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/producto")
 public class ProductoController {
 
     @Autowired

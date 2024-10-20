@@ -12,4 +12,6 @@ public interface UsuarioService {
     Usuario saveUsuario(Usuario usuario);
     
     void deleteUsuario(Long id);
+
+    String verify(Usuario user);
 }

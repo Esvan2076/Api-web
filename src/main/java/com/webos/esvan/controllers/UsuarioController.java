@@ -36,6 +36,11 @@ public class UsuarioController {
         return usuarioService.saveUsuario(usuario);
     }
 
+    @PostMapping({"/login"})
+    public String login(@RequestBody Usuario user) {
+        return this.usuarioService.verify(user);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteUsuario(@PathVariable Long id) {
         usuarioService.deleteUsuario(id);

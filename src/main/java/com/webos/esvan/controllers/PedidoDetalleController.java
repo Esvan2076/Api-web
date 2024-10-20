@@ -15,7 +15,7 @@ import com.webos.esvan.entities.PedidoDetalle;
 import com.webos.esvan.services.PedidoDetalleService;
 
 @RestController
-@RequestMapping("/api/pedido-detalles")
+@RequestMapping("/api/pedido-detalle")
 public class PedidoDetalleController {
 
     @Autowired

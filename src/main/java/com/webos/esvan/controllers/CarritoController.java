@@ -16,7 +16,7 @@ import com.webos.esvan.entities.Carrito;
 import com.webos.esvan.services.CarritoService;
 
 @RestController
-@RequestMapping("/api/carritos")
+@RequestMapping("/api/carrito")
 public class CarritoController {
 
     @Autowired
