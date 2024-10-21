@@ -1,4 +1,4 @@
-package com.webos.esvan.config;
+package com.webos.esvan.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,22 +27,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable()) // Deshabilitar CSRF (ya que es una API stateless)
+        return http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers( "/api/usuario/login", "/api/usuario/register").permitAll();  // Permitir acceso público a estas rutas
-                auth.anyRequest().authenticated();  // Todas las demás rutas requieren autenticación
+                auth.requestMatchers( "/api/usuario/login", "/api/usuario/register").permitAll();
+                auth.anyRequest().authenticated();
             })
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Configuración sin estado
-            .authenticationProvider(authenticationProvider()) // Proveedor de autenticación personalizado
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Agregar el filtro JWT
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(new BCryptPasswordEncoder(12)); // Usar BCrypt con fuerza de 12
-        provider.setUserDetailsService(userDetailsService); // Usar el servicio de detalles del usuario
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 

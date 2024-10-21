@@ -1,4 +1,4 @@
-package com.webos.esvan.config;
+package com.webos.esvan.infra.security;
 
 import com.webos.esvan.services.JWTService;
 import com.webos.esvan.services.MyUserDetailsService;
