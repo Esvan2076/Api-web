@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webos.esvan.entities.Usuario;
@@ -14,6 +15,8 @@ import com.webos.esvan.repositories.UsuarioRepository;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
     
+   
+
     @Autowired
     private JWTService jwtService;
 
@@ -22,6 +25,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Override
     public List<Usuario> getAllUsuarios() {
@@ -47,4 +52,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         Authentication authentication = this.authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getNombreUsuario(), user.getContrasena()));
         return authentication.isAuthenticated() ? this.jwtService.generateToken(user.getNombreUsuario()) : "fail";
     }
+
+    public Usuario register(Usuario user) {
+        user.setContrasena(this.encoder.encode(user.getContrasena()));
+        this.usuarioRepository.save(user);
+        return user;
+     }
 }

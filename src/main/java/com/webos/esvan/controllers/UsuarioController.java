@@ -36,13 +36,18 @@ public class UsuarioController {
         return usuarioService.saveUsuario(usuario);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteUsuario(@PathVariable Long id) {
+        usuarioService.deleteUsuario(id);
+    }
+
     @PostMapping({"/login"})
     public String login(@RequestBody Usuario user) {
         return this.usuarioService.verify(user);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUsuario(@PathVariable Long id) {
-        usuarioService.deleteUsuario(id);
+    @PostMapping({"/register"})
+    public Usuario register(@RequestBody Usuario user) {
+       return this.usuarioService.register(user);
     }
 }

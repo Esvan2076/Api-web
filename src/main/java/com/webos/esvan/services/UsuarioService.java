@@ -14,4 +14,6 @@ public interface UsuarioService {
     void deleteUsuario(Long id);
 
     String verify(Usuario user);
+
+    Usuario register(Usuario user);
 }

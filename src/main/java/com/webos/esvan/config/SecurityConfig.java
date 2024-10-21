@@ -29,7 +29,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable()) // Deshabilitar CSRF (ya que es una API stateless)
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers( "/api/usuario/login").permitAll();  // Permitir acceso público a estas rutas
+                auth.requestMatchers( "/api/usuario/login", "/api/usuario/register").permitAll();  // Permitir acceso público a estas rutas
                 auth.anyRequest().authenticated();  // Todas las demás rutas requieren autenticación
             })
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Configuración sin estado
