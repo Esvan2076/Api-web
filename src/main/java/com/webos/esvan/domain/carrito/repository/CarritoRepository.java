@@ -7,5 +7,5 @@ import com.webos.esvan.domain.carrito.Carrito;
 
 @Repository
 public interface CarritoRepository extends JpaRepository<Carrito, Long> {
-    Carrito findByUsuarioId(Long usuarioId);
+    Carrito findByUsuarioIdUsuario(Long usuarioId);
 }

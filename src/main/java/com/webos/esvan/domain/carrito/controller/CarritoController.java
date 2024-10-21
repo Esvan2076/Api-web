@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.webos.esvan.domain.carrito.Carrito;
-import com.webos.esvan.domain.carrito.service.CarritoService;
 
 @RestController
 @RequestMapping("/api/carrito")
@@ -43,7 +42,7 @@ public class CarritoController {
     @DeleteMapping("/{carritoId}/{productoId}")
     public ResponseEntity<Void> eliminarProductoDeCarrito(@PathVariable Long carritoId, @PathVariable Long productoId) {
         CarritoItemId id = new CarritoItemId(carritoId, productoId);
-        carritoService.eliminarProductoDeCarrito(carritoId);
+        carritoService.eliminarProductoDeCarrito(id);
         return ResponseEntity.noContent().build();
     }
 

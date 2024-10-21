@@ -27,15 +27,10 @@ public class Usuario implements UserDetails {
     private Long idUsuario;
 
     private String correo;
-
     private String nombreUsuario;
-
     private String contrasena;
-
     private Boolean esAdmin;
-
     private Date fechaNac;
-
     private String genero;
 
 
