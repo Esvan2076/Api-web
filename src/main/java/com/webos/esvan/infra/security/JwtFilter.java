@@ -1,7 +1,8 @@
 package com.webos.esvan.infra.security;
 
-import com.webos.esvan.services.JWTService;
-import com.webos.esvan.services.MyUserDetailsService;
+import com.webos.esvan.domain.usuario.Usuario;
+import com.webos.esvan.domain.usuario.repository.UsuarioRepository;
+import com.webos.esvan.domain.usuario.service.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,27 +24,32 @@ public class JwtFilter extends OncePerRequestFilter {
    private JWTService jwtService;
 
    @Autowired
-   ApplicationContext context;
+   private UsuarioRepository usuarioRepository;
 
    public JwtFilter() {
    }
 
+   @Override
    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
       String authHeader = request.getHeader("Authorization");
-      String token = null;
-      String username = null;
 
       if (authHeader != null && authHeader.startsWith("Bearer ")) {
-         token = authHeader.substring(7);
-         username = this.jwtService.extractUserName(token);
-      }
+         String token = authHeader.replace("Bearer ", "");
 
-      if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-         UserDetails userDetails = ((MyUserDetailsService)this.context.getBean(MyUserDetailsService.class)).loadUserByUsername(username);
-         if (this.jwtService.validateToken(token, userDetails)) {
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, (Object)null, userDetails.getAuthorities());
-            authToken.setDetails((new WebAuthenticationDetailsSource()).buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+         try {
+            String subject = jwtService.getSubject(token);
+
+            if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+               Usuario usuario = usuarioRepository.findByCorreo(subject);
+
+               if (usuario != null && jwtService.validateToken(token, usuario)) {
+                  UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+                  authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                  SecurityContextHolder.getContext().setAuthentication(authentication);
+               }
+            }
+         } catch (Exception e) {
+            logger.error("Error de autenticación: " + e.getMessage(), e);
          }
       }
 
