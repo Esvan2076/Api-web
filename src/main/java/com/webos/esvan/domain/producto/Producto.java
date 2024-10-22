@@ -24,4 +24,5 @@ public class Producto {
     private int cantidad;
     private Boolean mostrar;
     private String imagen;
+    private String descripcion;
 }
